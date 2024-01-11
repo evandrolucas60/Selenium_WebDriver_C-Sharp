@@ -37,8 +37,8 @@ namespace TestProject1
             //9. Assert that the size height is 21
             Assert.IsTrue(myElement.Size.Height.Equals(21));
             //10. Assert that the location is x=190, y=330
-            Assert.AreEqual(341, myElement.Location.X);
-            Assert.AreEqual(171, myElement.Location.Y);
+            Assert.AreEqual(341, myElement.Location.X); //this value depends on the browser size
+            Assert.AreEqual(171, myElement.Location.Y); //this value depends on the browser size
 
             driver.Quit();
         }
