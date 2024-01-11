@@ -1,10 +1,8 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
-using System.Drawing;
 using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
-using System.Security.Principal;
+using ExpectedCondition = SeleniumExtras.WaitHelpers.ExpectedConditions;
 
 namespace TestProject1
 {
@@ -51,6 +49,18 @@ namespace TestProject1
             {
                 return d.FindElement(By.Id("seccess"));
             });
+
+            _driver.Quit();
+        }
+
+        [TestMethod]
+        public void Test1_FixedExplicitly()
+        {
+            _driver.Navigate().GoToUrl("https://the-internet.herokuapp.com/dynamic_loading/1");
+
+            var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(15));
+            wait.Until(ExpectedCondition.ElementToBeClickable(By.Id("go"))).Click();
+            Assert.IsTrue(wait.Until(ExpectedCondition.ElementIsVisible(By.Id("success"))).Displayed);
 
             _driver.Quit();
         }
