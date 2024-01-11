@@ -4,6 +4,7 @@ using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 using System.Reflection;
+using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 using ExpectedConditions = SeleniumExtras.WaitHelpers.ExpectedConditions;
 
 namespace _15_User_Interactions
@@ -21,8 +22,12 @@ namespace _15_User_Interactions
             _driver.Navigate().GoToUrl("https://jqueryui.com/droppable/");
             wait.Until(ExpectedConditions.FrameToBeAvailableAndSwitchToIt(By.ClassName("demo-frame")));
 
+            IWebElement sourceElement = _driver.FindElement(By.Id("draggable"));
+            IWebElement targetElement = _driver.FindElement(By.Id("droppable"));
+            actions.DragAndDrop(sourceElement, targetElement).Perform();
 
-
+            Assert.AreEqual("Dropped!", targetElement.Text);       
+                
             _driver.Quit();
         }
 
