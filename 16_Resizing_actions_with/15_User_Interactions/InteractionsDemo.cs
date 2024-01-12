@@ -29,6 +29,16 @@ namespace _15_User_Interactions
             Assert.IsTrue(_driver.FindElement(By.XPath("//*[@id='resizable' and @style]")).Displayed);   
         }
 
+        [Test]
+        public void OpenDevToolsChrome()
+        {
+            _driver.Navigate().GoToUrl("http://www.google.com");
+            _actions.KeyDown(Keys.Control).KeyDown(Keys.Shift).SendKeys("i").Perform();
+
+            _actions.KeyUp(Keys.Control).KeyUp(Keys.Shift).Perform();
+            _driver.Navigate().GoToUrl("http://www.pureexample.com/jquery-ui/basic-droppable.html");
+        }
+
         [SetUp]
         public void Setup()
         {
