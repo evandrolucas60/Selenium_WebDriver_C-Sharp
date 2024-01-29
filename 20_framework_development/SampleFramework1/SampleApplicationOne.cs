@@ -9,18 +9,23 @@ namespace SampleFramework1
     public class SampleApplicationOne
     {
         private IWebDriver _driver { get; set; }
-        internal SampleApplicationPage sampleAppPage { get; private set; }
+        internal SampleApplicationPage SampleAppPage { get; private set; }
         internal TestUser TheTestUser { get; private set; }
-
+        internal TestUser EmergencyContactUser { get; private set; }
 
         [TestInitialize]
         public void SetupForEverySingleMethod()
         {
             _driver = GetChromeDrive();
-            sampleAppPage = new SampleApplicationPage(_driver);
+            SampleAppPage = new SampleApplicationPage(_driver);
+
             TheTestUser = new TestUser();
             TheTestUser.FirstName = "Evandro";
             TheTestUser.LastName = "Lucas";
+            
+            EmergencyContactUser = new TestUser();
+            EmergencyContactUser.FirstName = "Emergency First Name";
+            EmergencyContactUser.LastName = "Emergency Last Name";
         }
 
         [TestCleanup]
@@ -34,20 +39,20 @@ namespace SampleFramework1
         [Description("Validate that user is able to fill out the form successfully using valid data. ")]
         public void TestMethod1()
         {
-            TheTestUser.GenderType = Gender.Female;
+            SetGenderTypes(Gender.Female, Gender.Female);
 
-            sampleAppPage.GoTo();
-            var ultimateQAHomePage = sampleAppPage.FillOutFormAndSubmit(TheTestUser);
+            SampleAppPage.GoTo();
+            SampleAppPage.FillOutEmergencyContactUser(EmergencyContactUser);
+            var ultimateQAHomePage = SampleAppPage.FillOutPrimaryContactFormAndSubmit(TheTestUser);
             AssertPageVisible(ultimateQAHomePage);
-
         }
-           
+
         [TestMethod]
         [Description("Fake 2nd test.")]
         public void PretendTestNumber2()
         {
-            sampleAppPage.GoTo();
-            var ultimateQAHomePage = sampleAppPage.FillOutFormAndSubmit(TheTestUser);
+            SampleAppPage.GoTo();
+            var ultimateQAHomePage = SampleAppPage.FillOutPrimaryContactFormAndSubmit(TheTestUser);
             AssertPageVisibleVariation2(ultimateQAHomePage);
         }
 
@@ -55,9 +60,10 @@ namespace SampleFramework1
         [Description("Validate that when selecting the Other gender type, the form is subimmited  sucessfully ")]
         public void Test3()
         {
-            TheTestUser.GenderType = Gender.Other;
-            sampleAppPage.GoTo();
-            var ultimateQAHomePage = sampleAppPage.FillOutFormAndSubmit(TheTestUser);
+            SetGenderTypes(Gender.Other, Gender.Other);
+
+            SampleAppPage.GoTo();
+            var ultimateQAHomePage = SampleAppPage.FillOutPrimaryContactFormAndSubmit(TheTestUser);
             AssertPageVisible(ultimateQAHomePage);
         }
 
@@ -75,6 +81,12 @@ namespace SampleFramework1
         private void AssertPageVisibleVariation2(UltimateQAHomePage ultimateQAHomePage)
         {
             Assert.IsFalse(!ultimateQAHomePage.IsVisible, "UltimateQA home page was not visible.");
+        }
+
+        private void SetGenderTypes(Gender primaryContact, Gender emergencyContact)
+        {
+            TheTestUser.GenderType = primaryContact;
+            EmergencyContactUser.GenderType = emergencyContact;
         }
     }
 }
