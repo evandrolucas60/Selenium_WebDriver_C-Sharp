@@ -19,6 +19,7 @@ namespace SampleFramework1
             TheTestUser = new TestUser();
             TheTestUser.FirstName = "Evandro";
             TheTestUser.LastName = "Lucas";
+            TheTestUser.GenderType = Gender.Female;
         }
 
         [TestCleanup]

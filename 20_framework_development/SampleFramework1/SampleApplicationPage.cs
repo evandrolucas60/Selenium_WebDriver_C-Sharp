@@ -16,22 +16,32 @@ namespace SampleFramework1
             internal set { }
         }
 
+        private string PageTitle => "Sample Application Lifecycle - Sprint 3 - Ultimate QA";
         public IWebElement FirstnameField => _driver.FindElement(By.Name("firstname"));
-        public IWebElement LastNameField => _driver.FindElement(By.XPath("//*[@id=\"post-932\"]/div/form/input[3]"));
-        public IWebElement SubmitButton => _driver.FindElement(By.Name("lastname"));
-
-        private string PageTitle => "Sample Application Lifecycle - Sprint 2 - Ultimate QA";
+        public IWebElement LastNameField => _driver.FindElement(By.Name("lastname"));
+        public IWebElement SubmitButton => _driver.FindElement(By.XPath("//input[@type='submit']"));
+        public IWebElement FemaleGenderRadioButton => _driver.FindElement(By.XPath("//input[@value='female']"));
 
         internal void GoTo()
         {
-            _driver.Navigate().GoToUrl("https://www.ultimateqa.com/sample-application-lifecycle-sprint-2/");
+            _driver.Navigate().GoToUrl("https://www.ultimateqa.com/sample-application-lifecycle-sprint-3/");
             Assert.IsTrue(IsVisible, $"Sample application page was not visible, Expected{PageTitle}." +
                 $"Actual => {_driver.Title}");
         }
         internal UltimateQAHomePage FillOutFormAndSubmit(TestUser user)
         {
+            switch (user.GenderType)
+            {
+                case Gender.Male:
+                    break;
+                case Gender.Female:
+                    FemaleGenderRadioButton.Click();
+                    break;
+                case Gender.Other:
+                    break;
+            }
             FirstnameField.SendKeys(user.FirstName);
-            LastNameField.SendKeys(user.FirstName);
+            LastNameField.SendKeys(user.LastName);
             SubmitButton.Submit();
             return new UltimateQAHomePage(_driver);
         }
